@@ -1,14 +1,21 @@
 /* eslint-disable react/prop-types */
 import useProducts from "../utility/useProducts";
+import updateIcon from "../assets/update_icon.png";
+import deleteIcon from "../assets/delete_icon.png";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
+import { Link } from "react-router-dom";
 
-const Product = ({ item }) => {
-  const { cartItem, setCartItem } = useProducts();
-
+const Product = ({ item, isAdmin }) => {
+  const { cartItem, setCartItem, authToken } = useProducts();
+  const [deleteProduct] = useDeleteProduct();
   const addToCart = (product) => {
-    const localData = localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems"))
+    const localData = localStorage.getItem(authToken ? authToken : "cartItems")
+      ? JSON.parse(localStorage.getItem(authToken ? authToken : "cartItems"))
       : [];
-    localStorage.setItem("cartItems", JSON.stringify([...localData, product]));
+    localStorage.setItem(
+      authToken ? authToken : "cartItems",
+      JSON.stringify([...localData, product])
+    );
     setCartItem([...localData, product]);
   };
 
@@ -26,7 +33,26 @@ const Product = ({ item }) => {
         alt={item.title}
         className="w-full mb-4 h-[300px] object-contain"
       />
-      <p className="text-gray-600 font-bold text-xl">${item.price}</p>
+      <div className="flex justify-between items-center">
+        <p className="text-gray-600 font-bold text-xl">${item.price}</p>
+        {isAdmin && (
+          <div className="flex gap-4">
+            <Link to={"/add-product"} state={{ update: true, id: item.id }}>
+              <img
+                src={updateIcon}
+                alt="update_icon"
+                className="h-[35px] w-[35px] cursor-pointer"
+              />
+            </Link>
+            <img
+              src={deleteIcon}
+              alt="delete_icon"
+              className="h-[35px] w-[35px] cursor-pointer"
+              onClick={() => deleteProduct(item.id)}
+            />
+          </div>
+        )}
+      </div>
       <h2 className="text-lg font-semibold">{item.title}</h2>
       <p>{item.description.substr(0, 100)}...</p>
       {isInCart(item.id) ? (

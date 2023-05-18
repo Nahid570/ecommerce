@@ -4,11 +4,14 @@ import Pagination from "./Pagination";
 import Product from "./Product";
 
 const Products = () => {
-  const { products, searchTerm } = useProducts();
+  const { products, searchTerm, authToken, registeredUser } = useProducts();
+
+  const authUser = registeredUser?.find((user) => user?.id === authToken);
+  const isAdmin = authUser?.isAdmin;
 
   // Pagination
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 6;
+  const itemsPerPage = 1;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = products.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(products.length / itemsPerPage);
@@ -39,7 +42,7 @@ const Products = () => {
               </p>
             ) : (
               filteredProducts.map((item) => (
-                <Product key={item.id} item={item} />
+                <Product key={item.id} item={item} isAdmin={isAdmin} />
               ))
             )}
           </div>

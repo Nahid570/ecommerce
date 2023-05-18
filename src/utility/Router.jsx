@@ -7,6 +7,7 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Profile from "../components/Profile";
 import UpdateProfile from "../components/UpdateProfile";
+import AddProduct from "../pages/AddProduct";
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/update-profile" element={<UpdateProfile />} />
+        <Route path="/add-product" element={<AddProduct />} />
       </Routes>
       <Footer />
     </>

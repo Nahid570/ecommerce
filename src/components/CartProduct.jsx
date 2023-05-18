@@ -3,15 +3,18 @@ import trashIcon from "../assets/trash_icon.png";
 import useProducts from "../utility/useProducts";
 
 const CartProduct = ({ product }) => {
-  const { setCartItem } = useProducts();
+  const { setCartItem, authToken } = useProducts();
 
   const deleteProduct = (id) => {
     const remainingProducts =
-      localStorage.getItem("cartItems") &&
-      JSON.parse(localStorage.getItem("cartItems")).filter(
-        (item) => item.id != id
-      );
-    localStorage.setItem("cartItems", JSON.stringify(remainingProducts));
+      localStorage.getItem(authToken ? authToken : "cartItems") &&
+      JSON.parse(
+        localStorage.getItem(authToken ? authToken : "cartItems")
+      ).filter((item) => item.id != id);
+    localStorage.setItem(
+      authToken ? authToken : "cartItems",
+      JSON.stringify(remainingProducts)
+    );
     setCartItem(remainingProducts);
   };
 

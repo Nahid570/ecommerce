@@ -10,7 +10,7 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const { registeredUser, setAuthToken } = useProducts();
+  const { registeredUser, setAuthToken, setCartItem } = useProducts();
   const navigate = useNavigate();
   const notify = (message) => toast(message);
 
@@ -48,6 +48,10 @@ const Login = () => {
       if (isUser && isUser.password === user.password) {
         localStorage.setItem("token", isUser.id);
         setAuthToken(isUser.id);
+        const storedItems = localStorage.getItem(isUser.id)
+          ? JSON.parse(localStorage.getItem(isUser.id))
+          : [];
+        setCartItem([...storedItems]);
         notify("Login success.");
         navigate("/");
       } else {
@@ -57,7 +61,6 @@ const Login = () => {
       notify("Invalid username or password");
     }
   };
-
 
   return (
     <>

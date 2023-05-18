@@ -1,15 +1,19 @@
 import SearchBar from "./SearchBar";
 import shoppingCart from "../assets/shopping_cart.png";
 import useProducts from "../utility/useProducts";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 const Header = () => {
-  const { cartItem } = useProducts();
   const cardRef = useRef(null);
   const location = useLocation();
-  const { authToken, registeredUser } = useProducts();
+  const { authToken, registeredUser, setAuthToken, cartItem, setCartItem } =
+    useProducts();
   const [card, setCard] = useState(false);
+  const navigate = useNavigate();
+
+  const authUser = registeredUser?.find((user) => user?.id === authToken);
+  const isAdmin = authUser?.isAdmin;
 
   let hideSearchBar =
     location.pathname === "/cart" ||
@@ -33,6 +37,18 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // logout currenr user
+  const handleLogout = () => {
+    setAuthToken("");
+    localStorage.removeItem("token");
+    const storedItems = localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [];
+    setCartItem([...storedItems]);
+    setCard(false);
+    navigate("/");
+  };
 
   return (
     <div className="bg-black text-white flex items-center justify-between px-8 h-[60px]">
@@ -69,13 +85,29 @@ const Header = () => {
         )}
         {card && (
           <div className="absolute z-40 bg-black top-10 right-0" ref={cardRef}>
-            <ul className="p-4">
+            <ul className="p-4 flex flex-col gap-2">
               <Link to="/profile">
-                <li className="hover:underline hover:font-bold">Profile</li>
+                <li
+                  onClick={() => setCard((prevState) => !prevState)}
+                  className="hover:underline hover:font-bold"
+                >
+                  Profile
+                </li>
               </Link>
-              <Link>
-                <li className="hover:underline hover:font-bold">Logout</li>
-              </Link>
+              {isAdmin && (
+                <Link
+                  to="/add-product"
+                  onClick={() => setCard((prevState) => !prevState)}
+                >
+                  <li className="hover:underline hover:font-bold">Add Item</li>
+                </Link>
+              )}
+              <li
+                className="hover:underline hover:font-bold cursor-pointer"
+                onClick={handleLogout}
+              >
+                Logout
+              </li>
             </ul>
           </div>
         )}
