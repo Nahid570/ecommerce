@@ -8,6 +8,7 @@ import useUpdateproduct from "../hooks/useUpdateproduct";
 const AddProduct = () => {
   const titleRef = useRef(null);
   const { setProducts, products } = useProducts();
+  const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const productToUpdate = products?.find((item) => item.id === state?.id);
   const [formData, setFormData] = useState({
@@ -46,7 +47,7 @@ const AddProduct = () => {
   // This handleSubmit function work for both product Add and product Update simultaneously
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading((prevState) => !prevState);
     // product Update logic
     if (state?.update) {
       formData.id = state?.id;
@@ -142,14 +143,14 @@ const AddProduct = () => {
             type="submit"
             className="w-[40%] border border-white p-2 text-white text-xl hover:font-bold cursor-pointer mx-auto"
           >
-            Add Product
+            {!loading ? "Add Product" : "Loading..."}
           </button>
         ) : (
           <button
             type="submit"
             className="w-[40%] border border-white p-2 text-white text-xl hover:font-bold cursor-pointer mx-auto"
           >
-            Update product
+            {!loading ? "Update product" : "Loading..."}
           </button>
         )}
       </form>

@@ -15,8 +15,8 @@ const Cart = () => {
         </h2>
         {cartItem.length > 0 && (
           <div className="flex flex-wrap justify-between">
-            <h3 className="text-xl">Total Items: {cartItem.length}</h3>
-            <h3 className="text-xl">Total Cost: ${totalPrice.toFixed(2)}</h3>
+            <h3 className="text-xl">Total Items: {cartItem?.length}</h3>
+            <h3 className="text-xl">Total Cost: ${parseFloat(totalPrice).toFixed(2)}</h3>
           </div>
         )}
       </div>
