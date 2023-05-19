@@ -5,13 +5,13 @@ import Product from "./Product";
 
 const Products = () => {
   const { products, searchTerm, authToken, registeredUser } = useProducts();
-
+  const [sorted, setSorted] = useState("asc");
   const authUser = registeredUser?.find((user) => user?.id === authToken);
   const isAdmin = authUser?.isAdmin;
 
   // Pagination
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 1;
+  const itemsPerPage = 6;
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = products.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(products.length / itemsPerPage);
@@ -25,7 +25,22 @@ const Products = () => {
     pageCount,
   };
 
-  const filteredProducts = currentItems?.filter(
+  // product sorted logic based on their price
+  const sortedItems = currentItems?.sort((a, b) => {
+    if (sorted === "asc") {
+      return +a.price > +b.price ? 1 : -1;
+    } else if (sorted === "desc") {
+      return +a.price > +b.price ? -1 : 1;
+    }
+  });
+
+  const handleSortChange = (e) => {
+    setSorted(e.target.value);
+  };
+
+  // END => product sorted logic based on their price
+
+  const filteredProducts = sortedItems?.filter(
     (product) =>
       product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,6 +49,13 @@ const Products = () => {
   return (
     <>
       <div className="px-8 py-4 min-h-[calc(100vh-60px)] bg-gray-200">
+        <div className="flex justify-end gap-4 mb-5">
+          <p>Search</p>
+          <select value={sorted} onChange={handleSortChange}>
+            <option value="asc">ASC</option>
+            <option value="desc">DESC</option>
+          </select>
+        </div>
         {products?.length ? (
           <div className="grid gap-8 grid-cols-1 ss:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.length === 0 ? (
@@ -50,9 +72,11 @@ const Products = () => {
           <p className="text-2xl text-gray-800 font-bold">Loading...</p>
         )}
       </div>
-      <div className="mt-5">
-        <Pagination paginate={paginate} />
-      </div>
+      {filteredProducts.length && (
+        <div className="mt-5">
+          <Pagination paginate={paginate} />
+        </div>
+      )}
     </>
   );
 };

@@ -55,7 +55,7 @@ const Header = () => {
       <Link to="/" className="flex-1">
         <h2 className="text-2xl font-bold cursor-pointer text">ECOM.</h2>
       </Link>
-      <div className="flex-1">{!hideSearchBar && <SearchBar />}</div>
+      <div className="flex-1 hidden ss:block">{!hideSearchBar && <SearchBar />}</div>
       <div className="flex gap-4 items-center justify-end flex-1 relative">
         <Link to="/cart">
           <div className="relative">
