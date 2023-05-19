@@ -2,6 +2,7 @@ import { useState } from "react";
 import useProducts from "../utility/useProducts";
 import Pagination from "./Pagination";
 import Product from "./Product";
+import SearchBar from "./SearchBar";
 
 const Products = () => {
   const { products, searchTerm, authToken, registeredUser } = useProducts();
@@ -48,10 +49,16 @@ const Products = () => {
 
   return (
     <>
-      <div className="px-8 py-4 min-h-[calc(100vh-60px)] bg-gray-200">
-        <div className="flex justify-end gap-4 mb-5">
-          <p>Search</p>
-          <select value={sorted} onChange={handleSortChange}>
+      <div className="px-8 w-[100%] py-4 min-h-[calc(100vh-60px)] bg-gray-200">
+        <div className="flex justify-end w-[100%] gap-4 mb-5">
+          <div className="block ss:hidden w-[100%]">
+            <SearchBar modified={true} />
+          </div>
+          <select
+            value={sorted}
+            onChange={handleSortChange}
+            className="bg-transparent"
+          >
             <option value="asc">ASC</option>
             <option value="desc">DESC</option>
           </select>
@@ -73,7 +80,7 @@ const Products = () => {
         )}
       </div>
       {filteredProducts.length && (
-        <div className="mt-5">
+        <div className="my-5">
           <Pagination paginate={paginate} />
         </div>
       )}

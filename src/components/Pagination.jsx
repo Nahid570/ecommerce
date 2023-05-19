@@ -28,8 +28,8 @@ const Pagination = ({ paginate }) => {
           "next"
         }
         activeClassName="active bg-green-500 rounded-xl"
-        pageLinkClassName="page-link p-2 text-orange-800 hover:bg-blue-200"
-        previousLinkClassName="page-link p-2 text-blue-500 hover:bg-blue-200"
+        pageLinkClassName="page-link p-2 text-orange-800"
+        previousLinkClassName="page-link p-2 text-blue-500"
         nextLinkClassName="page-link p-2 text-blue-500 hover:bg-blue-200"
       />
     </>
