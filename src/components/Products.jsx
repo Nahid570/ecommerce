@@ -49,7 +49,7 @@ const Products = () => {
 
   return (
     <>
-      <div className="px-8 w-[100%] py-4 min-h-[calc(100vh-60px)] bg-gray-200">
+      <div className="px-8 w-[100%] py-4 min-h-[calc(100vh-60px)] bg-gray-400">
         <div className="flex justify-end w-[100%] gap-4 mb-5">
           <div className="block ss:hidden w-[100%]">
             <SearchBar modified={true} />
@@ -57,7 +57,7 @@ const Products = () => {
           <select
             value={sorted}
             onChange={handleSortChange}
-            className="bg-transparent"
+            className="bg-gray-400 text-white"
           >
             <option value="asc">ASC</option>
             <option value="desc">DESC</option>

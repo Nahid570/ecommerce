@@ -7,18 +7,15 @@ const SearchBar = ({ modified }) => {
 
   return (
     <div
-      className={`border flex justify-between rounded-md border-white p-2 h-[50px] ${modified && 'border-black'}`}
+      className={`border flex justify-between rounded-md border-white p-2 h-[50px] ${modified && 'border-white'}`}
     >
       <input
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className={`outline-none border-none bg-transparent w-[100%] pr-2 ${modified && 'placeholder-black'}`}
+        className={`outline-none border-none bg-transparent w-[100%] pr-2 ${modified && 'placeholder-white text-white'}`}
         placeholder="Search Products..."
       />
-      {/* <button>
-        <img src={searchIcon} alt="search_icon" className="w-[100%] h-[100%]" />
-      </button> */}
     </div>
   );
 };
